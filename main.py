@@ -6,6 +6,7 @@ from time import sleep
 
 import requests
 import logging
+import logging.handlers
 from bs4 import BeautifulSoup
 
 from selenium import webdriver
@@ -97,8 +98,8 @@ if __name__ == '__main__':
     logger = logging.getLogger("get_luck")
     logger.setLevel(LOG_LEVEL)
 
-    ch = logging.StreamHandler()
-    ch_format = logging.Formatter("%(asctime)s [%(levelname)s][" + session_id + "] %(message)s", "%Y-%m-%d %H:%M:%S")
+    ch = logging.handlers.SysLogHandler(address='/dev/log')
+    ch_format = logging.Formatter("%(name)s[" + str(os.getpid()) + "]: [%(levelname)s][" + session_id + "] %(message)s")
     ch.setFormatter(ch_format)
     ch_loglevel = logging.getLevelName(LOG_LEVEL)
     ch.setLevel(ch_loglevel)
