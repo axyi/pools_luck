@@ -76,49 +76,49 @@ LUCK_POOL_CHECKS = [
             },
         ],
     },
-    # {
-    #     'name': 'MiningPoolHub',
-    #     'url': 'https://ethereum.miningpoolhub.com/index.php?page=statistics&action=blocks',
-    #     'coin': 'ETH',
-    #     'indicating_load_class': 'main',
-    #     'filter_func': miningpoolhub_parce,
-    #     'structure': [
-    #         {
-    #             'tag': 'section',
-    #             'attr': {
-    #                 'id': 'main',
-    #             },
-    #         },
-    #     ],
-    # },
-    # {
-    #     'name': 'MiningPoolHub',
-    #     'url': 'https://bitcoin-gold.miningpoolhub.com/index.php?page=statistics&action=blocks',
-    #     'coin': 'BTG',
-    #     'indicating_load_class': 'main',
-    #     'filter_func': miningpoolhub_parce,
-    #     'structure': [
-    #         {
-    #             'tag': 'section',
-    #             'attr': {
-    #                 'id': 'main',
-    #             },
-    #         },
-    #     ],
-    # },
-    # {
-    #     'name': '2miners',
-    #     'url': 'https://2miners.com/',
-    #     'coin': '',
-    #     'indicating_load_class': 'mining-list-pplns',
-    #     'filter_func': two_miners,
-    #     'structure': [
-    #         {
-    #             'tag': 'div',
-    #             'attr': {
-    #                 'class': 'mining-list',
-    #             },
-    #         },
-    #     ],
-    # },
+    {
+        'name': 'MiningPoolHub',
+        'url': 'https://ethereum.miningpoolhub.com/index.php?page=statistics&action=blocks',
+        'coin': 'ETH',
+        'indicating_load_class': 'main',
+        'filter_func': miningpoolhub_parce,
+        'structure': [
+            {
+                'tag': 'section',
+                'attr': {
+                    'id': 'main',
+                },
+            },
+        ],
+    },
+    {
+        'name': 'MiningPoolHub',
+        'url': 'https://bitcoin-gold.miningpoolhub.com/index.php?page=statistics&action=blocks',
+        'coin': 'BTG',
+        'indicating_load_class': 'main',
+        'filter_func': miningpoolhub_parce,
+        'structure': [
+            {
+                'tag': 'section',
+                'attr': {
+                    'id': 'main',
+                },
+            },
+        ],
+    },
+    {
+        'name': '2miners',
+        'url': 'https://2miners.com/',
+        'coin': '',
+        'indicating_load_class': 'mining-list-pplns',
+        'filter_func': two_miners,
+        'structure': [
+            {
+                'tag': 'div',
+                'attr': {
+                    'class': 'mining-list',
+                },
+            },
+        ],
+    },
 ]
