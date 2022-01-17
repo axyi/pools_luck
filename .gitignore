@@ -1,0 +1,5 @@
+connections.py
+.idea/
+venv/
+*.log
+__pycache__
