@@ -1,4 +1,3 @@
-import json
 import re
 
 import bs4
@@ -14,7 +13,7 @@ def slush_pool_parce(some_bs4: bs4.element.Tag) -> ([str]):
         percent_info = source.find('div', attrs={'class': '_ErQDvbQ Tl31gjJs KOYJ53Ig gJkPryAP'})
         if percentil_info:
             luck_info += percentil_info.find('span').text
-            luck_info += ':'
+            luck_info += ': '
         if percent_info:
             percent = re.findall(r'[\d\.]+', source.find('span', attrs={'data-role': 'value'}).text)[0]
             luck_info += percent
@@ -51,6 +50,18 @@ def two_miners(some_bs4: bs4.element.Tag) -> ([str]):
         value = pool_options[1].find('div', attrs={'class': 'pool-options__val'}).text
         luck_info = title + ': ' + value
         luck.append(luck_info)
+    return luck
+
+
+def baikalmine_parce(some_bs4: bs4.element.Tag) -> ([str]):
+    luck = []
+    source_info = some_bs4.find('ul', attrs={'class': 'list-group list-group-flush text-center'}, recursive=True)
+    rows = source_info.findAll('li')
+    luck_desc = rows[0].findAll('span')
+    title = luck_desc[0].text.rstrip().lstrip()
+    value = luck_desc[1].text.rstrip().lstrip()
+    luck_info = title + ': ' + value
+    luck.append(luck_info)
     return luck
 
 
@@ -103,6 +114,18 @@ LUCK_POOL_CHECKS = [
                 'attr': {
                     'id': 'main',
                 },
+            },
+        ],
+    },
+    {
+        'name': 'BaikalMine',
+        'url': 'https://baikalmine.com/pools/pplns/clo/blocks',
+        'coin': 'CLO',
+        'filter_func': baikalmine_parce,
+        'structure': [
+            {
+                'tag': 'bm-blocks-pools',
+                'attr': {},
             },
         ],
     },

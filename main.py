@@ -153,11 +153,12 @@ if __name__ == '__main__':
                 continue
 
             try:
-                myElem = WebDriverWait(browser, IMPLICITLY) \
-                    .until(expected_conditions
-                           .presence_of_element_located((By.ID,
-                                                         pool[
-                                                             'indicating_load_class'])))
+                if 'indicating_load_class' in pool:
+                    myElem = WebDriverWait(browser, IMPLICITLY) \
+                        .until(expected_conditions
+                               .presence_of_element_located((By.ID,
+                                                             pool[
+                                                                 'indicating_load_class'])))
                 sleep(2)
             except TimeoutException:
                 message = 'Загрузка превысила таймаут ожидания: {}'.format(url)
