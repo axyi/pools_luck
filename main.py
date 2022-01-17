@@ -1,10 +1,7 @@
 import fcntl
-import math
 import os
-import re
 import sys
 import uuid
-from random import randint
 from time import sleep
 
 import requests
@@ -13,7 +10,6 @@ from bs4 import BeautifulSoup
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
@@ -122,24 +118,29 @@ if __name__ == '__main__':
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
 
-    for pool in LUCK_POOL_CHECKS:
-        logger.info('Запускаем проверку для {}'.format(pool))
+    for key, pool in enumerate(LUCK_POOL_CHECKS):
         browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()),
                                    options=chrome_options)
         try:
             browser.delete_all_cookies()
             # Валидация параметров
-            if 'url' not in LUCK_POOL_CHECKS[pool]:
-                logger.warning('url - is required param in {}'.format(pool))
+            if 'name' not in pool:
+                logger.warning('name - is required param in {}'.format(key))
                 continue
 
-            if 'coin' not in LUCK_POOL_CHECKS[pool]:
-                logger.warning('coin - is required param in {}'.format(pool))
+            if 'coin' not in pool:
+                logger.warning('coin - is required param in {}'.format(pool['name']))
                 continue
 
-            url = LUCK_POOL_CHECKS[pool]['url']
-            coin = LUCK_POOL_CHECKS[pool]['coin']
+            if 'coin' not in pool:
+                logger.warning('coin - is required param in {}'.format(pool['name']))
+                continue
+
+            url = pool['url']
+            coin = pool['coin']
+            name = pool['name']
             # Основной цикл проверки
+            logger.info('Запускаем проверку для {}'.format(name))
             try:
                 browser.implicitly_wait(IMPLICITLY)
                 browser.get(url)
@@ -153,7 +154,7 @@ if __name__ == '__main__':
                 myElem = WebDriverWait(browser, IMPLICITLY) \
                     .until(expected_conditions
                            .presence_of_element_located((By.ID,
-                                                         LUCK_POOL_CHECKS[pool][
+                                                         pool[
                                                              'indicating_load_class'])))
                 sleep(2)
             except TimeoutException:
@@ -168,7 +169,7 @@ if __name__ == '__main__':
             soup = soup.find('body', attrs={}, recursive=False)
 
             success = True
-            for idx, element in enumerate(LUCK_POOL_CHECKS[pool]['structure']):
+            for idx, element in enumerate(pool['structure']):
                 try:
                     soup = soup.find(element['tag'], attrs=element['attr'], recursive=True)
                 except AttributeError:
@@ -182,16 +183,16 @@ if __name__ == '__main__':
 
             luck_soup = soup
             try:
-                luck_desc = LUCK_POOL_CHECKS[pool]['filter_func'](luck_soup)
-                luck = LuckInfo(pool, url, coin, luck_desc)
+                luck_desc = pool['filter_func'](luck_soup)
+                luck = LuckInfo(name, url, coin, luck_desc)
+                logger.info("Успешно получена информация: {}".format(luck))
                 luck.send_alert()
-                # logging.info("Успешно получена информация: {}".format(luck.__dict__))
             except Exception as e:
-                message = 'Не удалось получить информацию об удаче с ресурса {}. Error:'.format(pool, e)
+                message = 'Не удалось получить информацию об удаче с ресурса {}. Error:'.format(name, e)
                 send_telegram_message(message)
                 logger.warning(message)
         except Exception as e:
-            message = 'Ошибка при выполнении основного цикла проверки пула {}: {}'.format(pool, e)
+            message = 'Ошибка при выполнении основного цикла проверки пула {}: {}'.format(name, e)
             send_telegram_message(message)
             logger.error(message)
         finally:
