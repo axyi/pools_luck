@@ -116,6 +116,7 @@ if __name__ == '__main__':
     chrome_options = webdriver.ChromeOptions()
     # chrome_options.add_argument("--profile-directory=Profile")
     chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
 
     for key, pool in enumerate(LUCK_POOL_CHECKS):
