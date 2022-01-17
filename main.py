@@ -54,7 +54,7 @@ class LuckInfo:
         if self.coin and self.coin != '':
             message += 'удача для монеты **{}**:'.format(self.coin)
         else:
-            message += 'удача'
+            message += 'удача:'
 
         for val in self.luck_info:
             message += '\n```\n'
