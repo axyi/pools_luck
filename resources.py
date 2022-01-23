@@ -5,7 +5,7 @@ import bs4
 
 def slush_pool_parce(some_bs4: bs4.element.Tag) -> ([str]):
     luck = []
-    luck_tmp = []
+    send = False
     source_last_block_block = some_bs4.find('section',
                                             attrs={'class': 'nPw6h2yK zfQnwI6U xlaKWi82'},
                                             recursive=True)
@@ -53,7 +53,7 @@ def slush_pool_parce(some_bs4: bs4.element.Tag) -> ([str]):
                                           minutes=int(current_block_minutes),
                                           seconds=int(current_block_seconds))
     last_block_info = 'Длительность раунда: {}'.format(delta_last_block)
-    luck_tmp.append(last_block_info)
+    luck.append(last_block_info)
 
     source_luck_block = some_bs4.find('section',
                                       attrs={'class': 'nPw6h2yK zfQnwI6U B04mJW0I'},
@@ -87,7 +87,7 @@ def slush_pool_parce(some_bs4: bs4.element.Tag) -> ([str]):
             luck_info += percent
             luck_info += '%'
         if luck_info != '':
-            luck_tmp.append(luck_info)
+            luck.append(luck_info)
 
     # Референсные значения
     delta20min = datetime.timedelta(minutes=20)
@@ -98,26 +98,27 @@ def slush_pool_parce(some_bs4: bs4.element.Tag) -> ([str]):
 
     # Условия отправки уведомлений
     if delta_last_block < delta20min:
-        luck = luck_tmp
+        send = True
 
     if delta_last_block > delta9hour:
-        luck = luck_tmp
+        send = True
 
     if percent_last10blocks < ref_last10blocks:
-        luck = luck_tmp
+        send = True
 
     if percent_last50blocks < ref_last50blocks:
-        luck = luck_tmp
+        send = True
 
     if percent_last250blocks < ref_last250blocks:
-        luck = luck_tmp
+        send = True
 
+    # print(luck)
     # print(delta_last_block)
     # print(percent_last10blocks)
     # print(percent_last50blocks)
     # print(percent_last250blocks)
 
-    return luck
+    return luck, send
 
 
 def miningpoolhub_parce(some_bs4: bs4.element.Tag) -> ([str]):

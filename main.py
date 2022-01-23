@@ -31,12 +31,14 @@ class LuckInfo:
     pool_name = str
     pool_link = str
     coin = str
+    send_info = bool
     luck_info = [str]
 
     def __init__(self, pool_name: str, pool_link: str, coin: str, luck_info: [str]):
         self.pool_name = pool_name
         self.pool_link = pool_link
         self.coin = coin
+        self.send_info = True
         self.luck_info = luck_info
 
     def __repr__(self):
@@ -47,7 +49,7 @@ class LuckInfo:
         Отправка информации об удаче на пуле
         :return:
         """
-        if len(self.luck_info) < 1:
+        if len(self.luck_info) < 1 or not self.send_info:
             return
 
         message = 'На пуле [{}]({}) '.format(self.pool_name, self.pool_link)
@@ -186,8 +188,9 @@ if __name__ == '__main__':
 
             luck_soup = soup
             try:
-                luck_desc = pool['filter_func'](luck_soup)
+                luck_desc, send = pool['filter_func'](luck_soup)
                 luck = LuckInfo(name, url, coin, luck_desc)
+                luck.send_info = send
                 logger.info("Успешно получена информация: {}".format(luck))
                 luck.send_alert()
             except Exception as e:
