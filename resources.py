@@ -167,7 +167,7 @@ LUCK_POOL_CHECKS = [
         'name': 'SlushPool',
         'url': 'https://slushpool.com/ru/stats/btc/',
         'coin': 'BTC',
-        'indicating_load_class': 'app',
+        'indicating_load_class': 'X8Buifb5',
         'filter_func': slush_pool_parce,
         'structure': [
             # {

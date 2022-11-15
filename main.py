@@ -20,7 +20,7 @@ from selenium.webdriver.support import expected_conditions
 from connections import TELEGRAM_API
 from resources import LUCK_POOL_CHECKS
 
-IMPLICITLY = 5
+IMPLICITLY = 15
 LOG_LEVEL = 'DEBUG'
 
 
@@ -166,7 +166,7 @@ if __name__ == '__main__':
                 message = 'Загрузка превысила таймаут ожидания: {}'.format(url)
                 send_telegram_message(message)
                 logger.warning(message)
-                continue
+                # continue
 
             response = browser.page_source
             source_soup = BeautifulSoup(response, 'html.parser')
